@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#061326">
+<title>Nathalia · Mis XV Años</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#061326}
+body{
+ margin:0;background:#061326;color:#fff8e8;
+ font-family:Georgia,"Times New Roman",serif;
+ overflow-x:hidden;
+}
+section{position:relative;width:100%;background:#061326}
+/* Zona transparente sobre el botón de mapa que ya aparece en la imagen aprobada. */
+.ceremony-section{position:relative}
+.ceremony-map-hotspot{
+ position:absolute;left:19%;top:87.4%;width:62%;height:5.8%;
+ display:block;z-index:5;background:transparent;border-radius:999px;
+}
+.ceremony-map-hotspot:focus-visible{
+ outline:2px solid #f3c96b;outline-offset:3px;
+}
+.approved-image{
+ display:block;width:100%;height:auto;
+ /* La imagen aprobada se muestra completa y sin filtros ni modificaciones. */
+}
+/* Partículas y siluetas flotantes: capa decorativa muy sutil, independiente de las imágenes. */
+#particles{
+ position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden;
+}
+.particle{
+ position:absolute;width:1.5px;height:1.5px;border-radius:50%;
+ background:rgba(246,210,123,.62);
+ box-shadow:0 0 3px 1px rgba(246,210,123,.18);
+ animation:twinkle var(--duration) ease-in-out infinite;
+ opacity:.18;
+}
+@keyframes twinkle{
+ 0%,100%{opacity:.08;transform:scale(.75)}
+ 50%{opacity:.32;transform:scale(1.25)}
+}
+.floating-silhouette{
+ position:absolute;display:block;width:var(--size);height:var(--size);
+ color:rgba(237,201,119,.17);opacity:0;
+ animation:float-silhouette var(--duration) ease-in-out infinite;
+ animation-delay:var(--delay);will-change:transform,opacity;
+ filter:drop-shadow(0 0 2px rgba(237,201,119,.04));
+}
+.floating-silhouette svg{display:block;width:100%;height:100%;overflow:visible}
+.floating-silhouette.butterfly{color:rgba(237,201,119,.16)}
+.floating-silhouette.flower{color:rgba(237,201,119,.13)}
+@keyframes float-silhouette{
+ 0%{opacity:0;transform:translate3d(0,18px,0) rotate(-10deg) scale(.82)}
+ 15%{opacity:.72}
+ 50%{opacity:.55;transform:translate3d(22px,-30px,0) rotate(8deg) scale(1)}
+ 85%{opacity:.6}
+ 100%{opacity:0;transform:translate3d(-14px,-78px,0) rotate(-8deg) scale(.9)}
+}
+@media(prefers-reduced-motion:reduce){
+ .particle,.floating-silhouette{animation:none!important;opacity:.18}
+}
+/* Confirmación final: mantiene el concepto visual sin reemplazar las artes aprobadas. */
+.confirm{
+ min-height:100svh;padding:70px 20px 85px;display:flex;
+ align-items:center;justify-content:center;text-align:center;
+ background:
+ radial-gradient(circle at 50% 35%,rgba(38,68,108,.38),transparent 44%),
+ #061326;
+ position:relative;
+}
+.confirm::before{
+ content:"";position:absolute;inset:18px;border:1px solid rgba(243,201,107,.42);
+ border-radius:24px;pointer-events:none;
+}
+.confirm-card{width:min(620px,100%);position:relative;z-index:2}
+.orn{color:#f3c96b;font-size:1.6rem;letter-spacing:.3em}
+.kicker{
+ margin:10px 0;color:#e8c879;font-size:.68rem;letter-spacing:.3em;
+ text-transform:uppercase
+}
+h1{
+ margin:5px 0 16px;color:#fff0bd;font-size:clamp(2.5rem,10vw,4.7rem);
+ font-weight:400;font-style:italic;text-shadow:0 0 20px rgba(243,201,107,.2)
+}
+.confirm p{
+ max-width:520px;margin:0 auto;line-height:1.8;color:#fff8e9
+}
+.form{
+ width:min(430px,100%);margin:25px auto 0;display:grid;gap:12px
+}
+input,select{
+ width:100%;padding:13px 14px;border-radius:12px;
+ border:1px solid rgba(243,201,107,.48);
+ background:rgba(2,11,24,.72);color:#fff8e9;
+ font-family:inherit;outline:none
+}
+button{
+ border:1px solid #f3c96b;
+ background:linear-gradient(135deg,#a87522,#f0cb71,#a87522);
+ color:#101827;padding:14px 20px;border-radius:999px;
+ font:600 .78rem Georgia,serif;letter-spacing:.13em;cursor:pointer
+}
+.note{font-size:.7rem;opacity:.62;margin-top:13px;line-height:1.5}
+.footer{
+ padding:24px;text-align:center;background:#030b17;color:#d8c596;
+ font-size:.62rem;letter-spacing:.18em
+}
+
+/* Área transparente clicable alineada sobre el botón impreso en la imagen de ceremonia.
+   No se edita ni se reemplaza la imagen aprobada. */
+.ceremony-section,.reception-section{position:relative;line-height:0}
+.ceremony-section .approved-image,.reception-section .approved-image{display:block;width:100%;height:auto}
+.ceremony-map-hitarea{
+  position:absolute;
+  z-index:10;
+  left:20.3%;
+  top:80.45%;
+  width:59.5%;
+  height:5.1%;
+  display:block;
+  cursor:pointer;
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:999px;
+  line-height:normal;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+}
+/* Zona transparente sobre el botón impreso de ubicación de la recepción. */
+.reception-map-hitarea{
+  position:absolute; z-index:10; left:23.5%; top:80.5%; width:53.5%; height:5.1%;
+  display:block; cursor:pointer; background:transparent; border:1px solid transparent;
+  border-radius:999px; line-height:normal; -webkit-tap-highlight-color:transparent;
+  transition:background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+}
+.reception-map-hitarea:hover{
+  background:rgba(243,201,107,.16); border-color:rgba(255,226,157,.9);
+  box-shadow:0 0 12px rgba(243,201,107,.48), inset 0 0 10px rgba(243,201,107,.18);
+  transform:scale(1.015);
+}
+.reception-map-hitarea:active{
+  background:rgba(243,201,107,.24);
+  box-shadow:0 0 17px rgba(243,201,107,.62), inset 0 0 12px rgba(243,201,107,.25);
+}
+.reception-map-hitarea:focus-visible{outline:2px solid rgba(255,220,145,.95);outline-offset:3px}
+
+/* Hover elegante: resplandor dorado sutil, sin alterar el destino del enlace. */
+.ceremony-map-hitarea:hover{
+  background:rgba(243,201,107,.16);
+  border-color:rgba(255,226,157,.9);
+  box-shadow:0 0 12px rgba(243,201,107,.48), inset 0 0 10px rgba(243,201,107,.18);
+  transform:scale(1.015);
+}
+.ceremony-map-hitarea:active{
+  background:rgba(243,201,107,.24);
+  box-shadow:0 0 17px rgba(243,201,107,.62), inset 0 0 12px rgba(243,201,107,.25);
+}
+.ceremony-map-hitarea:focus-visible{
+  outline:2px solid rgba(255,220,145,.95);
+  outline-offset:3px;
+}
+
+
+
+/* RSVP adaptado al estilo de la referencia: marco azul noche, dorado y WhatsApp verde */
+.confirm-reference{
+  min-height:100svh;
+  padding:58px 20px 76px;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(33,57,91,.58),transparent 52%),
+    #050d1d;
+}
+.confirm-reference::before{
+  inset:18px auto auto 50%;
+  transform:translateX(-50%);
+  width:min(992px,calc(100% - 40px));
+  height:calc(100% - 36px);
+  border:2px solid rgba(193,157,70,.58);
+  border-radius:46px;
+  background:linear-gradient(145deg,rgba(18,35,61,.88),rgba(4,14,32,.95) 72%);
+  box-shadow:inset 0 0 0 1px rgba(243,201,107,.06);
+}
+.confirm-reference-card{
+  width:min(800px,100%);
+  min-height:690px;
+  padding:38px 24px 34px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.confirm-reference .confirm-star{
+  position:absolute;
+  color:#b89b57;
+  font-family:Georgia,serif;
+  font-size:42px;
+  line-height:1;
+  opacity:.65;
+}
+.confirm-star-top{top:0;left:0}
+.confirm-star-bottom{right:0;bottom:0}
+.confirm-script-title,
+.confirm-script-footer{
+  margin:0;
+  color:#f0c452;
+  font-family:"Brush Script MT","Segoe Script","Snell Roundhand",cursive;
+  font-weight:500;
+  font-style:normal;
+  text-shadow:0 0 15px rgba(240,196,82,.08);
+}
+.confirm-script-title{
+  font-size:clamp(3.1rem,8.3vw,5.7rem);
+  line-height:1.1;
+  margin:0 0 28px;
+}
+.confirm-reference-copy{
+  max-width:700px!important;
+  margin:0 auto!important;
+  color:#c6cfdf!important;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(1.05rem,2.4vw,1.75rem);
+  font-weight:500;
+  line-height:1.55!important;
+}
+.confirm-envelope{
+  width:132px;height:132px;
+  margin:42px auto 36px;
+  display:grid;place-items:center;
+  color:#f0c452;
+  border:2px solid #c99d2e;
+  border-radius:50%;
+  box-shadow:0 0 0 10px rgba(201,157,46,.08),0 0 30px rgba(201,157,46,.12);
+}
+.confirm-envelope svg{width:58px;height:58px}
+.confirm-reference-whatsapp{
+  width:min(500px,100%);
+  min-height:96px;
+  padding:18px 28px;
+  display:flex;align-items:center;justify-content:center;gap:15px;
+  color:#fff;
+  background:linear-gradient(100deg,#07865f,#10a579 55%,#07865f);
+  border:2px solid rgba(71,205,159,.7);
+  border-radius:999px;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  text-decoration:none;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(1.15rem,2.7vw,1.75rem);
+  font-weight:700;
+  transition:transform .2s ease,filter .2s ease;
+}
+.confirm-reference-whatsapp:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.confirm-reference-whatsapp svg{width:34px;height:34px;flex:0 0 auto}
+.confirm-reference-phone{
+  width:min(720px,100%);
+  min-height:102px;
+  margin:24px auto 0;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  border:2px solid rgba(185,139,35,.8);
+  border-radius:28px;
+  color:#f0c452;
+  text-decoration:none;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(1.2rem,2.7vw,1.85rem);
+  font-weight:700;
+}
+.confirm-phone-icon{font-size:1.45em;line-height:1}
+.confirm-script-footer{
+  margin:42px 0 0;
+  font-size:clamp(2.3rem,5.4vw,3.8rem);
+  line-height:1.15;
+}
+@media(max-width:600px){
+  .confirm-reference{padding:36px 14px 48px}
+  .confirm-reference::before{width:calc(100% - 24px);height:calc(100% - 24px);inset:12px auto auto 50%;border-radius:28px}
+  .confirm-reference-card{min-height:610px;padding:35px 12px 30px}
+  .confirm-script-title{font-size:clamp(2.8rem,12vw,4rem);margin-bottom:22px}
+  .confirm-reference-copy{font-size:1.08rem!important;max-width:330px!important}
+  .confirm-desktop-break{display:none}
+  .confirm-envelope{width:112px;height:112px;margin:32px auto 30px}
+  .confirm-reference-whatsapp{min-height:74px;padding:14px 18px;gap:10px;font-size:1.08rem}
+  .confirm-reference-whatsapp svg{width:29px;height:29px}
+  .confirm-reference-phone{min-height:78px;margin-top:18px;padding:12px 10px;gap:12px;font-size:1.15rem;border-radius:20px}
+  .confirm-script-footer{margin-top:32px;font-size:2.8rem}
+  .confirm-reference .confirm-star{font-size:32px}
+}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- 1. PORTADA: imagen original, sin modificación -->
+<section id="portada">
+  <img class="approved-image" src="img/imagen1.jpg" alt="Nathalia · Mis XV Años">
+</section>
+
+<!-- 2. PADRES: imagen original, sin modificación -->
+<section id="padres">
+  <img class="approved-image" src="img/imagen2.jpg" alt="Con la bendición de mis padres">
+</section>
+
+<!-- 3. CEREMONIA RELIGIOSA: imagen original, sin modificación -->
+<section id="ceremonia" class="ceremony-section">
+  <img class="approved-image" src="img/imagen3.jpg" alt="Ceremonia Religiosa">
+  <a class="ceremony-map-hitarea"
+     href="https://share.google/dIjlVOeWawXUcxVKl"
+     target="_blank" rel="noopener"
+     aria-label="Ver ubicación de la Parroquia Cristo Rey en Google Maps"
+     title="Ver ubicación en mapa"></a>
+  <a class="ceremony-map-hotspot"
+     href="https://share.google/dIjlVOeWawXUcxVKl"
+     target="_blank" rel="noopener"
+     aria-label="Ver ubicación de la ceremonia religiosa en Google Maps"
+     title="Ver ubicación en mapa"></a>
+</section>
+
+<!-- 4. RECEPCIÓN: imagen original, sin modificación -->
+<section id="recepcion" class="reception-section">
+  <img class="approved-image" src="img/imagen4.jpg" alt="Recepción">
+  <a class="reception-map-hitarea"
+     href="https://share.google/7L8o1RKRHZlWrOYZN"
+     target="_blank" rel="noopener"
+     aria-label="Ver ubicación del salón en el mapa"
+     title="Ver ubicación del salón en el mapa"></a>
+</section>
+
+<!-- 5. CONFIRMAR ASISTENCIA -->
+<section id="confirmar" class="confirm confirm-reference">
+  <div class="confirm-card confirm-reference-card">
+    <span class="confirm-star confirm-star-top" aria-hidden="true">✧</span>
+    <span class="confirm-star confirm-star-bottom" aria-hidden="true">✧</span>
+    <h2 class="confirm-script-title">Reserva tu asistencia</h2>
+    <p class="confirm-reference-copy">
+      Reserva tu asistencia quince días antes del evento al<br class="confirm-desktop-break">
+      siguiente número telefónico.
+    </p>
+
+    <div class="confirm-envelope" aria-hidden="true">
+      <svg viewBox="0 0 64 64" role="presentation">
+        <rect x="11" y="15" width="42" height="34" rx="5" fill="currentColor"/>
+        <path d="M15 21 32 34 49 21" fill="none" stroke="#07152b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 45 27 33M49 45 37 33" fill="none" stroke="#07152b" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <a class="confirm-reference-whatsapp" href="https://wa.me/526221303642?text=Hola%2C%20quiero%20confirmar%20mi%20asistencia%20a%20los%20XV%20de%20Nathalia." target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3.2A12.2 12.2 0 0 0 5.5 21.6L4 28l6.6-1.7A12.2 12.2 0 1 0 16 3.2Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M11.2 9.8c-.5 0-1 .2-1.4.7-.5.5-1.2 1.3-1.2 2.8s1.2 3.1 1.4 3.3c.2.2 2.4 3.8 6 5.1 3 1.1 3.6.9 4.2.8.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.9-.6l-2.2-1.1c-.3-.2-.7-.2-.9.2l-.9 1.1c-.2.3-.5.3-.8.1a9.5 9.5 0 0 1-2.8-1.7 10.2 10.2 0 0 1-1.9-2.4c-.2-.3 0-.5.1-.7l.7-.8c.2-.2.3-.5.4-.7.1-.2 0-.5-.1-.7l-1-2.4c-.2-.5-.4-.7-.9-.7Z" fill="currentColor"/>
+      </svg>
+      <span>Confirmar por WhatsApp</span>
+    </a>
+
+    <a class="confirm-reference-phone" href="tel:+526221303642">
+      <span class="confirm-phone-icon" aria-hidden="true">☎</span>
+      <span>+52 1 622 130 3642</span>
+    </a>
+
+    <p class="confirm-script-footer">¡Te esperamos!</p>
+  </div>
+</section>
+
+<footer class="footer">NATHALIA · MIS XV AÑOS · 26.12.26</footer>
+
+<script>
+
+/* Destellos discretos y siluetas animadas de mariposas/flores, siempre detrás del contenido. */
+const layer = document.getElementById("particles");
+for(let i=0;i<44;i++){
+  const p=document.createElement("i");
+  p.className="particle";
+  p.style.left=(Math.random()*100)+"%";
+  p.style.top=(Math.random()*100)+"%";
+  const size=(Math.random()*1.1+.7);
+  p.style.width=p.style.height=size+"px";
+  p.style.setProperty("--duration",(Math.random()*5+5)+"s");
+  p.style.animationDelay=(-Math.random()*8)+"s";
+  layer.appendChild(p);
+}
+const butterflySVG='<svg viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M31 29C25 12 7 5 5 18c-2 10 9 17 23 17C14 40 8 51 16 56c8 5 16-6 16-20 0 14 8 25 16 20 8-5 2-16-12-21 14 0 25-7 23-17C57 5 39 12 33 29l-1 7z"/><path fill="currentColor" d="M29 26h6v21h-6z"/><path d="M30 27 22 17M34 27l8-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const flowerSVG='<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="currentColor"><ellipse cx="32" cy="15" rx="8" ry="13"/><ellipse cx="32" cy="49" rx="8" ry="13"/><ellipse cx="15" cy="32" rx="13" ry="8"/><ellipse cx="49" cy="32" rx="13" ry="8"/><ellipse cx="20" cy="20" rx="8" ry="12" transform="rotate(-45 20 20)"/><ellipse cx="44" cy="20" rx="8" ry="12" transform="rotate(45 44 20)"/><ellipse cx="20" cy="44" rx="8" ry="12" transform="rotate(45 20 44)"/><ellipse cx="44" cy="44" rx="8" ry="12" transform="rotate(-45 44 44)"/><circle cx="32" cy="32" r="7"/></g></svg>';
+for(let i=0;i<16;i++){
+  const el=document.createElement("span");
+  const isButterfly=i%2===0;
+  el.className="floating-silhouette "+(isButterfly?"butterfly":"flower");
+  el.innerHTML=isButterfly?butterflySVG:flowerSVG;
+  el.style.left=(4+Math.random()*92)+"%";
+  el.style.top=(12+Math.random()*78)+"%";
+  el.style.setProperty("--size",(14+Math.random()*17)+"px");
+  el.style.setProperty("--duration",(Math.random()*13+17)+"s");
+  el.style.setProperty("--delay",(-Math.random()*24)+"s");
+  layer.appendChild(el);
+}
+
+</script>
+</body>
+</html>
